@@ -18,5 +18,16 @@
     <ClCompile Include="DLLinjection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mainclass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mainclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
