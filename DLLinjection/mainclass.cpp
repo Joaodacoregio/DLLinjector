@@ -1,5 +1,5 @@
-// mainclass.cpp
 #include "mainclass.h"
+#include "functions_process.h"  // Inclua o cabeçalho das funções
 
 MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "DLL INJECTOR", wxDefaultPosition, wxSize(500, 300))
 {
@@ -48,8 +48,8 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "DLL INJECTOR", wxDefaultPosition, 
     wxListBox* listDlls = new wxListBox(panel, wxID_ANY, wxDefaultPosition, wxSize(200, 100), 0, nullptr, wxLB_SINGLE);
 
     // Criando o botão para injetar DLL
-    wxButton* btnInjectDLL = new wxButton(panel, wxID_ANY, "Injetar DLL\s");
-    btnInjectDLL->SetMinSize(wxSize(100,25));
+    wxButton* btnInjectDLL = new wxButton(panel, wxID_ANY, "Injetar DLL");
+    btnInjectDLL->SetMinSize(wxSize(100, 25));
 
     // Adicionando o botão e a lista ao boxSizer
     boxSizer->Add(boxButtonSizer, 0, wxEXPAND);
@@ -64,5 +64,12 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "DLL INJECTOR", wxDefaultPosition, 
     mainSizer->Add(middleSizer, 1, wxEXPAND);  // Rodapé expandido
 
     panel->SetSizer(mainSizer);
+
+    // Conectar o evento do botão "Selecionar Processo"
+    btnSelectProcess->Bind(wxEVT_BUTTON, [this, txtProcessInput](wxCommandEvent&) {
+        HandleListProcess(txtProcessInput);  // Chama a função para lidar com a seleção do processo
+        });
+
+    // Centralizar a janela
     this->Center();
 }

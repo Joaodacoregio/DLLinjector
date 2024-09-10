@@ -21,12 +21,18 @@
     <ClCompile Include="mainclass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="functions_process.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mainclass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="functions_process.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

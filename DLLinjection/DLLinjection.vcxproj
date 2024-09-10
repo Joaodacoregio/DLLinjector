@@ -131,10 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="functions_process.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainclass.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="functions_process.h" />
     <ClInclude Include="include.h" />
     <ClInclude Include="mainclass.h" />
   </ItemGroup>
