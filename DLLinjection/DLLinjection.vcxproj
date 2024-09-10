@@ -131,7 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DLLinjection.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="mainclass.cpp" />
   </ItemGroup>
   <ItemGroup>
