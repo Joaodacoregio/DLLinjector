@@ -131,6 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="functions_dll.cpp" />
+    <ClCompile Include="functions_dll.h" />
     <ClCompile Include="functions_process.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainclass.cpp" />

@@ -24,6 +24,12 @@
     <ClCompile Include="functions_process.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="functions_dll.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="functions_dll.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include.h">

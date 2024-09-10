@@ -1,5 +1,6 @@
 #include "mainclass.h"
 #include "functions_process.h"  // Inclua o cabeçalho das funções
+#include "functions_dll.h"      // Inclua o cabeçalho para lidar com DLLs
 
 MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "DLL INJECTOR", wxDefaultPosition, wxSize(500, 300))
 {
@@ -69,6 +70,15 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "DLL INJECTOR", wxDefaultPosition, 
     btnSelectProcess->Bind(wxEVT_BUTTON, [this, txtProcessInput](wxCommandEvent&) {
         HandleListProcess(txtProcessInput);  // Chama a função para lidar com a seleção do processo
         });
+
+    // Conectar o evento do botão "Adicionar DLL"
+    btnAddDll->Bind(wxEVT_BUTTON, [this, listDlls](wxCommandEvent&) {
+        HandleSelectDLL(listDlls);  // Chama a função para selecionar a DLL
+        });
+
+    btnInjectDLL->Bind(wxEVT_BUTTON,[this, listDlls, txtProcessInput](wxCommandEvent&) {
+        injectDLL(listDlls, txtProcessInput);
+    });
 
     // Centralizar a janela
     this->Center();
