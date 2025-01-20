@@ -13,33 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{98d830bf-f2e0-49a1-898a-433d20917ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{256ea48f-560e-47b0-9ca7-a56c0060528a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\reader">
+      <UniqueIdentifier>{b29cd4fa-9a27-492c-904c-6eb736c84aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\reader">
+      <UniqueIdentifier>{672412e9-b8e7-4868-b01a-6cacddbff09c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainclass.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mainGUI.h">
+      <Filter>Header Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="functions_process.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="mainGUI.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="functions_dll.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="functions_dll.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="objectRenderReader.cpp">
+      <Filter>Source Files\reader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="mainclass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="functions_process.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="objectRenderReader.h">
+      <Filter>Header Files\reader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

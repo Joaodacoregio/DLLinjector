@@ -24,6 +24,7 @@
     <ProjectGuid>{5256597f-6c93-4d56-872c-0633426c31c7}</ProjectGuid>
     <RootNamespace>DLLinjection</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>LuniaBotGUI</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -131,16 +132,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="functions_dll.cpp" />
-    <ClCompile Include="functions_dll.h" />
-    <ClCompile Include="functions_process.cpp" />
+    <ClCompile Include="mainGUI.cpp" />
+    <ClCompile Include="mainGUI.h" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainclass.cpp" />
+    <ClCompile Include="objectRenderReader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions_process.h" />
-    <ClInclude Include="include.h" />
-    <ClInclude Include="mainclass.h" />
+    <ClInclude Include="objectRenderReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
