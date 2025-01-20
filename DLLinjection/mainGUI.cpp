@@ -1,5 +1,7 @@
 #include "mainGUI.h"
  
+#include "objectRenderReader.h"
+
 bool MyApp::OnInit()
 {
     MyFrame* frame = new MyFrame();
@@ -32,8 +34,25 @@ MyFrame::MyFrame()
 
 void MyFrame::OnStartBot(wxCommandEvent& event)
 {
+    ObjectRenderReader reader;
+
     // Simulate logging into the terminal (wxTextCtrl)
     terminal->AppendText("Bot started...\n");
+    StageRange sRange = { 0.0f,9999.0f,9999.0f,0.0f };
+    Entity entBuffer;
+
+    if (reader.isReadAllRootsAddrs(reader.getPtrProcessReader()->getProcessHandle())) {
+        reader.getPtrEntityReader()->validEntitiesAddr(sRange);
+    }
+
+    for (const auto& addrs : reader.getPtrEntityReader()->getRangeEntitiesAddrs()) {
+        entBuffer = reader.getPtrEntityReader()->readEntityAddr(addrs);
+        std::wstring name = reader.getPtrEntityReader()->getEntityName(entBuffer);
+        terminal->AppendText(L"Detected entity, your X and Y are->" + std::to_wstring(entBuffer.X) + L" and " + std::to_wstring(entBuffer.Y) + L"\n");
+
+    }
+ 
+
 }
 
 void MyFrame::OnSelectStage(wxCommandEvent& event)

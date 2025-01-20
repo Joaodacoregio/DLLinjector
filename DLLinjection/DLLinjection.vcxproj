@@ -132,12 +132,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="entityReader.cpp" />
     <ClCompile Include="mainGUI.cpp" />
     <ClCompile Include="mainGUI.h" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="math.cpp" />
     <ClCompile Include="objectRenderReader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="entityReader.h" />
+    <ClInclude Include="includes.h" />
+    <ClInclude Include="math.h" />
     <ClInclude Include="objectRenderReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

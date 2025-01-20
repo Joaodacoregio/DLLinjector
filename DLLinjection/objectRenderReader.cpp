@@ -66,12 +66,12 @@ bool ObjectRenderReader::readRootEntityAddress(HANDLE ReaderHProcess) {
         uintptr_t baseAddress = ptrProcessReader->GetModuleBaseAddress(ReaderHProcess, "LuniaClient.exe");
         std::vector<uintptr_t> offsets = { 0x88 , 0x3C0 , 0x120 ,0x00 };
 
-        uintptr_t finalAddress = ptrMemoryReader->ReadPointerWithOffsets(ReaderHProcess, baseAddress + ADDRS_OBJRENDER, offsets);
+        uintptr_t finalAddress = ptrMemoryReader->ReadPointerWithOffsets(ReaderHProcess, baseAddress + ADDR_OBJECT_RENDER, offsets);
 
         if (finalAddress) {
             int value;
             if (ptrMemoryReader->ReadMemory(ReaderHProcess, finalAddress, &value, sizeof(value))) {
-                rootEntityAddrs = finalAddress;
+                rootEntityAddress = finalAddress;
                 return true;
             }
             else {
@@ -94,7 +94,7 @@ bool ObjectRenderReader::readRootEntityAddress(HANDLE ReaderHProcess) {
 
 bool ObjectRenderReader::isReadAllRootsAddrs(HANDLE hProcess) {
     //Add more hear
-    if (isReadRootEntityAddrs(hProcess))
+    if (readRootEntityAddress(hProcess))
     {
         return true;
     }
