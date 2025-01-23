@@ -12,7 +12,7 @@ void PlayerReader::readPlayerAddr() {
 
     // Lê os dados do player, sem tentar copiar ponteiros diretamente
     if (!ReadProcessMemory(ptrReaderObjectRender->getPtrProcessReader()->getProcessHandle()
-        , reinterpret_cast<LPCVOID>(ptrReaderObjectRender->getRootPlayerAddrs()),
+        , reinterpret_cast<LPCVOID>(ptrReaderObjectRender->getRootPlayerAddress()),
         &playerBuffer, sizeof(Player), &bytesRead) || bytesRead != sizeof(Player)) {
         std::cerr << "Erro ao ler o jogador no endereço de memória fornecido." << std::endl;
     }
@@ -25,8 +25,8 @@ void PlayerReader::readPlayerAddr() {
 void PlayerReader::infoDataPlayer() {
     Player player;
     while (true) {
-        ptrReaderObjectRender->getPlayerReader()->readPlayerAddr();
-        player = ptrReaderObjectRender->getPlayerReader()->player;
+        ptrReaderObjectRender->getPtrPlayerReader()->readPlayerAddr();
+        player = ptrReaderObjectRender->getPtrPlayerReader()->player;
 
         system("CLS");
 

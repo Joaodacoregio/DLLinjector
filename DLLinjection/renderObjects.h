@@ -1,10 +1,20 @@
-#ifndef RENDEROBJECT_H
-#define RENDEROBJECT_H
-
+ï»¿#ifndef RENDEROBJECTS_H
+#define RENDEROBJECTS_H
+#include "includes.h"
 
 struct RenderObject {};
 
-
+struct Drop : public RenderObject {
+	struct DropEntity* ptrOne;  //0x0000
+	struct DropEntity* ptrTwo;  //0x0008
+	struct DropEntity* ptrThre; //0x0010, corrigido para manter o padrï¿½o de nomeaï¿½ï¿½o
+	char pad_0018[24];         //0x0018
+	float X;                    //0x0030
+	char pad_0034[4];           //0x0034
+	float Y;                    //0x0038
+	char pad_003C[52];          //0x003C
+	struct NameClass* namePtr; //0x0070, descomente se necessï¿½rio
+};
 struct Entity : public RenderObject {
 	struct Entity* PtrPai; //0x0000
 	struct Entity* PtrFilho; //0x0008
@@ -29,7 +39,7 @@ struct Player : public RenderObject {                           //Seria player u
 	char Padding1[4];   // Padding para alinhamento
 	// Element Offset: 160
 	float mana;          // Offset 0xA0, 4 bytes
-	char Padding2[184]; // Padding para alcançar o próximo elemento
+	char Padding2[184]; // Padding para alcanï¿½ar o prï¿½ximo elemento
 	// Element Offset: 348
 	float X;          // Offset 0x15C, 4 bytes
 	char Padding3[4];   // Padding para alinhamento
@@ -43,11 +53,22 @@ struct Player : public RenderObject {                           //Seria player u
 
 };
 
+struct Obstacle : public RenderObject
+{
+public:
+	struct StructEntity* ptrOne;  //0x0000
+	struct StructEntity* ptrTwo;  //0x0008
+	struct StructEntity* ptrThre; //0x0010 
+	char pad_0018[24];            //0x0018
+	float X;                      //0x0030
+	char pad_0034[4];             //0x0034
+	float Y;                      //0x0038
+	char pad_003C[44];            //0x003C
+	wchar_t* namePtr;             //0x0068
+}; //Size: 0x01C0
 
-//TODO: remove here
 struct StageRange {
 	float p1x, p1y, p2x, p2y;
 };
-
 
 #endif // !1

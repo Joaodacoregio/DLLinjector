@@ -75,26 +75,49 @@ bool ObjectRenderReader::readRootEntityAddress(HANDLE ReaderHProcess) {
                 return true;
             }
             else {
-                std::cerr << "Falha na leitura de memória!" << std::endl;
                 return false;
             }
         }
         else {
-            std::cerr << "Falha ao calcular o endereço final!" << std::endl;
             return false;
         }
     }
     else {
-        std::cerr << "Falha ao abrir o processo!" << std::endl;
         return false;
     }
 
 }
 
+bool ObjectRenderReader::readRootPlayerAddress(HANDLE ReaderHProcess) {
+    if (ReaderHProcess) {
+        uintptr_t baseAddress = ptrProcessReader->GetModuleBaseAddress(ReaderHProcess, "LuniaClient.exe");
+        std::vector<uintptr_t> offsets = { 0x18,0x3E0 };
+
+        uintptr_t finalAddress = ptrMemoryReader->ReadPointerWithOffsets(ReaderHProcess, baseAddress + ADDRS_PLAYERDATA, offsets);
+
+        if (finalAddress) {
+            int value;
+            if (ptrMemoryReader->ReadMemory(ReaderHProcess, finalAddress, &value, sizeof(value))) {
+                rootPlayerAddress = finalAddress;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
 
 bool ObjectRenderReader::isReadAllRootsAddrs(HANDLE hProcess) {
     //Add more hear
-    if (readRootEntityAddress(hProcess))
+    if (readRootEntityAddress(hProcess) && readRootPlayerAddress(hProcess))
     {
         return true;
     }

@@ -1,34 +1,21 @@
 #ifndef OBJECT_RENDER_READER_H
 #define OBJECT_RENDER_READER_H
 #define ADDR_OBJECT_RENDER 0x023A4538
+#define ADDRS_PLAYERDATA 0x0236E900
+
 
 #include "includes.h"
 #include "entityReader.h"
+#include "playerReader.h"
 
-
-struct Entity {
-    struct Entity* PtrPai; //0x0000
-    struct Entity* PtrFilho; //0x0008
-    struct Entity* PtrEspecie; //0x0010
-    char pad_0018[24]; //0x0018
-    float X; //0x0030
-    char pad_0034[4]; //0x0034
-    float Y; //0x0038
-    float VectorX; //0x003C
-    char pad_0040[4]; //0x0040
-    float VectorY; //0x0044
-    char pad_0048[64]; //0x0048
-    struct EntitySkill* currentSkillPtr; //0x0088
-    char pad_0090[232]; //0x0090
-    struct EntityName* nameEntityPtr; //0x0178
-};
-
-struct StageRange {
-    float p1x, p1y, p2x, p2y;
-};
+ 
+ 
 
 // Forward declarations for undefined classes
 class EntityReader;
+class PlayerReader;
+struct Entity;
+struct Obstacle;
 
 // Process reader class for handling process and memory operations
 class ProcessReader {
@@ -39,7 +26,7 @@ public:
     }
 
     HANDLE OpenProcessHandle(DWORD pid);
-    uintptr_t GetModuleBaseAddress(HANDLE hProcess, const std::string& moduleName);
+    uintptr_t GetModuleBaseAddress(HANDLE hProcess, const std::string& moduleName); //this is a bug because i used utf
     void setProcessHandle(HANDLE hProcess) { processHandle = hProcess; }
     DWORD GetProcessIdByWindowName(const std::string& windowName);
     void setGameProcessId() { gameProcessId = GetProcessIdByWindowName("Lunia"); }
@@ -68,23 +55,29 @@ public:
         ptrProcessReader = std::make_unique<ProcessReader>();
         ptrMemoryReader = std::make_unique<MemoryReader>();
         ptrEntityReader = std::make_unique<EntityReader>(this);
+        ptrPlayerReader = std::make_unique<PlayerReader>(this);
     }
 
     ~ObjectRenderReader() = default;
 
     bool isReadAllRootsAddrs(HANDLE processHandle);
     bool readRootEntityAddress(HANDLE processHandle); //Você lidou com o jogo de 2010 retornar bool sem is é normal '-'
+    bool readRootPlayerAddress(HANDLE processHandle);  
  
     ProcessReader* getPtrProcessReader() const { return ptrProcessReader.get(); }
     MemoryReader* getPtrMemoryReader() const { return ptrMemoryReader.get(); }
     EntityReader* getPtrEntityReader() const { return ptrEntityReader.get(); }
+    PlayerReader* getPtrPlayerReader() const { return ptrPlayerReader.get(); }
     uintptr_t getRootEntityAddress() const { return rootEntityAddress; }
+    uintptr_t getRootPlayerAddress() const { return rootPlayerAddress; }
 
 private:
     std::unique_ptr<EntityReader> ptrEntityReader;
+    std::unique_ptr<PlayerReader> ptrPlayerReader;
     std::unique_ptr<ProcessReader> ptrProcessReader;
     std::unique_ptr<MemoryReader> ptrMemoryReader;
     uintptr_t rootEntityAddress = 0;
+    uintptr_t rootPlayerAddress = 0;
 };
 
 #endif

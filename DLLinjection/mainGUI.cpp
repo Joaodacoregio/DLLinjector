@@ -32,27 +32,40 @@ MyFrame::MyFrame()
     this->Center();
 }
 
-void MyFrame::OnStartBot(wxCommandEvent& event)
-{
-    ObjectRenderReader reader;
+void MyFrame::OnStartBot(wxCommandEvent& event) {
+    if (isRunning) {
+        terminal->AppendText("Bot already running!\n");
+        return;
+    }
 
-    // Simulate logging into the terminal (wxTextCtrl)
     terminal->AppendText("Bot started...\n");
-    StageRange sRange = { 0.0f,9999.0f,9999.0f,0.0f };
-    Entity entBuffer;
+    isRunning = true;
 
-    if (reader.isReadAllRootsAddrs(reader.getPtrProcessReader()->getProcessHandle())) {
-        reader.getPtrEntityReader()->validEntitiesAddr(sRange);
-    }
+    // Inicia a thread do bot
+    botThread = std::thread([this]() {
+        ObjectRenderReader reader;
+        Player player;
 
-    for (const auto& addrs : reader.getPtrEntityReader()->getRangeEntitiesAddrs()) {
-        entBuffer = reader.getPtrEntityReader()->readEntityAddr(addrs);
-        std::wstring name = reader.getPtrEntityReader()->getEntityName(entBuffer);
-        terminal->AppendText(L"Detected entity, your X and Y are->" + std::to_wstring(entBuffer.X) + L" and " + std::to_wstring(entBuffer.Y) + L"\n");
+        if (reader.isReadAllRootsAddrs(reader.getPtrProcessReader()->getProcessHandle())) {
+            while (isRunning) {
+                // Simula a leitura dos dados do jogador
+                reader.getPtrPlayerReader()->readPlayerAddr();
+                player = reader.getPtrPlayerReader()->getPlayer();
 
-    }
- 
+                // Atualiza o terminal de forma thread-safe
+                wxTheApp->CallAfter([this, player]() {
+                    terminal->AppendText(L"Detected player, your X and Y are -> " +
+                        std::to_wstring(player.X) + L" and " +
+                        std::to_wstring(player.Y) + L"\n");
+                    });
 
+                // Espera 1 segundo
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+            }
+        }
+        });
+
+    botThread.detach(); // Torna a thread independente
 }
 
 void MyFrame::OnSelectStage(wxCommandEvent& event)
@@ -62,3 +75,12 @@ void MyFrame::OnSelectStage(wxCommandEvent& event)
 }
 
  
+
+
+void MyFrame::StopBot() {
+    if (isRunning) {
+        terminal->AppendText("Stopping bot...\n");
+        isRunning = false;
+        // Espera a thread terminar se ela não estiver destacada (opcional)
+    }
+}

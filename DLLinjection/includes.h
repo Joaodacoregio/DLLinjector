@@ -18,6 +18,8 @@
 #include <algorithm>
 #include <set>
 #include <unordered_map>
+#include "renderObjects.h"
 #include "math.h"
+
 
 #endif // INCLUDES_H

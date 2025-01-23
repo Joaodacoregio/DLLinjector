@@ -1,12 +1,10 @@
-#ifndef PLAYERREADER_H
-#define PLAYERREADER_H
- 
+#ifndef PLAYER_READER_H
+#define PLAYER_READER_H
 
 #include "includes.h"
 #include "objectRenderReader.h"
 
 class ObjectRenderReader;
-struct Player;
 
 class PlayerReader {
 public:
@@ -24,4 +22,4 @@ private:
 };
 
 
-#endif  
+#endif
