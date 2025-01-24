@@ -1,6 +1,9 @@
 #include "mainGUI.h"
+#include "stageRadar.h"
  
-#include "objectRenderReader.h"
+
+MyFrame* MyFrame::instance = nullptr;
+
 
 bool MyApp::OnInit()
 {
@@ -30,6 +33,9 @@ MyFrame::MyFrame()
 
     // Centralize the window
     this->Center();
+
+    // Guardar instância
+    instance = this;
 }
 
 void MyFrame::OnStartBot(wxCommandEvent& event) {
@@ -43,26 +49,28 @@ void MyFrame::OnStartBot(wxCommandEvent& event) {
 
     // Inicia a thread do bot
     botThread = std::thread([this]() {
+        StageRange range = { 0.0f,9999.0f , 9999.0f , 0.0f };
         ObjectRenderReader reader;
-        Player player;
+        reader.isReadAllRootsAddrs(reader.getPtrProcessReader()->getProcessHandle());
 
-        if (reader.isReadAllRootsAddrs(reader.getPtrProcessReader()->getProcessHandle())) {
+
+        StageRadar radar(&reader);
+ 
+
+       
             while (isRunning) {
+                radar.scanAllObjRenderInRange(range);
                 // Simula a leitura dos dados do jogador
-                reader.getPtrPlayerReader()->readPlayerAddr();
-                player = reader.getPtrPlayerReader()->getPlayer();
+                uintptr_t nearestRenderObjAddress = radar.getNearestRenderObject(range);
+ 
+                std::wstring objName = radar.getRenderObjectName(nearestRenderObjAddress);
 
-                // Atualiza o terminal de forma thread-safe
-                wxTheApp->CallAfter([this, player]() {
-                    terminal->AppendText(L"Detected player, your X and Y are -> " +
-                        std::to_wstring(player.X) + L" and " +
-                        std::to_wstring(player.Y) + L"\n");
-                    });
+                terminal->AppendText(objName);
 
                 // Espera 1 segundo
-                std::this_thread::sleep_for(std::chrono::seconds(1));
+                std::this_thread::sleep_for(std::chrono::seconds(3));
             }
-        }
+ 
         });
 
     botThread.detach(); // Torna a thread independente
@@ -84,3 +92,14 @@ void MyFrame::StopBot() {
         // Espera a thread terminar se ela não estiver destacada (opcional)
     }
 }
+
+void MyFrame::writeTerminal(std::wstring text)
+{
+    if (instance && instance->terminal)
+    {
+        instance->terminal->AppendText(text);
+    }
+}
+
+
+ 

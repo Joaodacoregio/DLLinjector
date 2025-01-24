@@ -204,4 +204,129 @@ void  EntityReader::validEntities(StageRange range) {
 }
 
 
- 
+uintptr_t EntityReader::getNearestEntityAddrs(Player player)
+{
+    uintptr_t nearestEntityAddr = 0; // Inicializa com um valor padrão
+    float minDistance = DEFAULT_MIN_DISTANCE;
+
+    for (const auto& validEntityAddr : rangeEntitiesAddrs) {
+        Entity entity;
+        SIZE_T bytes;
+        if (ReadProcessMemory(ptrReaderObjectRender->getPtrProcessReader()->getProcessHandle()
+            , reinterpret_cast<LPCVOID>(validEntityAddr), &entity, sizeof(Entity), &bytes) &&
+            bytes == sizeof(Entity)) {
+
+            // Calcula a distância euclidiana entre o player e a entidade
+            float disX = entity.X - player.X;
+            float disY = entity.Y - player.Y;
+            float distance = std::sqrt(disX * disX + disY * disY);  // Distância Euclidiana
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearestEntityAddr = validEntityAddr;
+            }
+        }
+    }
+
+    return nearestEntityAddr; // Retorna o valor (0 se nenhum endereço foi encontrado)
+}
+
+Entity EntityReader::getNearestEntity(Player player) {
+    Entity nearestEntity;
+    float minDistance = DEFAULT_MIN_DISTANCE;
+
+    for (const auto& entity : rangeEntities) {
+        // Calcula a distância euclidiana entre o player e a entidade
+        float disX = entity.X - player.X;
+        float disY = entity.Y - player.Y;
+        float distance = std::sqrt(disX * disX + disY * disY);  // Distância Euclidiana
+
+        // Verifica se a distância atual é a menor encontrada até agora
+        if (distance < minDistance) {
+            minDistance = distance;
+            nearestEntity = entity;  // Atualiza a entidade mais próxima
+        }
+    }
+    return nearestEntity;
+}
+
+
+uintptr_t EntityReader::realNearestEntity(uintptr_t nearestEntityAddr, StageRange range, Player player) {
+
+    uintptr_t newNearestEntityAddr = 0;
+
+    validEntitiesAddr(range);
+
+
+    newNearestEntityAddr = getNearestEntityAddrs(player);
+    if (nearestEntityAddr != newNearestEntityAddr) {
+        std::wcout << "Nova entidade proxima!" << std::endl;
+        return newNearestEntityAddr;
+    }
+    return newNearestEntityAddr;
+
+}
+
+// Função principal
+std::set<std::wstring> EntityReader::getEntityData() {
+    std::set<std::wstring> setNames; // Conjunto para armazenar nomes únicos de entidades
+
+    entityBrowser();
+    auto entityAddrs = getEntitiesAddrs();
+    // Itera sobre os endereços das entidades
+    for (const auto& entityAddr : entityAddrs) {
+        // Lê os dados da entidade
+        Entity entity = readEntityAddr(entityAddr);
+
+        // Obtém o nome da entidade
+        std::wstring entityName = getEntityName(entity);
+
+        // Insere o nome da entidade no conjunto (remove duplicatas automaticamente)
+        setNames.insert(entityName);
+    }
+    return setNames;
+}
+
+uintptr_t EntityReader::getEntityAddrsUsingName(const std::wstring& name) {
+    Entity ent;
+    std::wstring entName;
+
+
+    for (const auto& validAddrs : rangeEntitiesAddrs) {
+        ent = readEntityAddr(validAddrs);
+        entName = getEntityName(ent);
+
+        if (entName == name) {
+            return validAddrs;
+        }
+    }
+}
+
+
+
+std::wstring EntityReader::getCurrentSkill(const Entity& entityBuffer) {
+    unsigned char namePointerBuffer[NAME_BUFFER_SIZE] = { 0 };
+    SIZE_T bytesRead = 0;
+
+    // Ler o ponteiro do nome da entidade a partir do endereço do buffer da entidade
+    if (ReadProcessMemory(ptrReaderObjectRender->getPtrProcessReader()->getProcessHandle(),
+        reinterpret_cast<LPCVOID>(entityBuffer.currentSkillPtr),
+        &namePointerBuffer, sizeof(namePointerBuffer), &bytesRead) && bytesRead == sizeof(namePointerBuffer)) {
+
+        if (namePointerBuffer) {
+            uint64_t* nameAddress = reinterpret_cast<uint64_t*>(namePointerBuffer + NAME_SKILL_OFFSET);
+            wchar_t nameBuffer[100] = { 0 };
+            SIZE_T bytesReadInner = 0;
+
+            if (ReadProcessMemory(ptrReaderObjectRender->getPtrProcessReader()->getProcessHandle(),
+                reinterpret_cast<LPCVOID>(*nameAddress),
+                nameBuffer, sizeof(nameBuffer) - sizeof(wchar_t), &bytesReadInner) && bytesReadInner > 0) {
+
+                // Finalizar a string com `\0` para segurança
+                nameBuffer[bytesReadInner / sizeof(wchar_t)] = L'\0';
+                return std::wstring(nameBuffer);
+            }
+        }
+    }
+    return L""; // Retorno vazio em caso de falha
+}

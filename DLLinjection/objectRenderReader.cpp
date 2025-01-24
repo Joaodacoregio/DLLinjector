@@ -115,12 +115,79 @@ bool ObjectRenderReader::readRootPlayerAddress(HANDLE ReaderHProcess) {
 }
 
 
+bool ObjectRenderReader::readRootObstacleAddress(HANDLE ReaderHProcess) {
+    if (ReaderHProcess) {
+        uintptr_t baseAddress = ptrProcessReader->GetModuleBaseAddress(ReaderHProcess, "LuniaClient.exe");
+        std::vector<uintptr_t> offsets = { 0x88 , 0x3C0 , 0x160  , 0x00 };
+
+        uintptr_t finalAddress = ptrMemoryReader->ReadPointerWithOffsets(ReaderHProcess, baseAddress + ADDR_OBJECT_RENDER, offsets);
+
+        if (finalAddress) {
+            int value;
+            if (ptrMemoryReader->ReadMemory(ReaderHProcess, finalAddress, &value, sizeof(value))) {
+                rootObstacleAddress = finalAddress;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+
+bool ObjectRenderReader::readRootDropAddress(HANDLE ReaderHProcess) {
+
+
+    if (ReaderHProcess) {
+        uintptr_t baseAddress = ptrProcessReader->GetModuleBaseAddress(ReaderHProcess, "LuniaClient.exe");
+        std::vector<uintptr_t> offsets = { 0x88 , 0x3C0 , 0x150  , 0x00 };
+
+        uintptr_t finalAddress = ptrMemoryReader->ReadPointerWithOffsets(ReaderHProcess, baseAddress + ADDR_OBJECT_RENDER, offsets);
+
+        if (finalAddress) {
+            int value;
+            if (ptrMemoryReader->ReadMemory(ReaderHProcess, finalAddress, &value, sizeof(value))) {
+                rootDropAddress = finalAddress;
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
 bool ObjectRenderReader::isReadAllRootsAddrs(HANDLE hProcess) {
-    //Add more hear
-    if (readRootEntityAddress(hProcess) && readRootPlayerAddress(hProcess))
+    if (readRootEntityAddress(hProcess) && readRootPlayerAddress(hProcess) && readRootDropAddress(hProcess)
+        &&readRootObstacleAddress(hProcess))
     {
         return true;
     }
-
     return false;
+}
+
+bool ObjectRenderReader::isAddrsReable(LPCVOID addrs, RenderObject renderObjBuffer) {
+    SIZE_T bytesRead;
+
+    HANDLE hProcess = ptrProcessReader->getProcessHandle();
+
+    if (ReadProcessMemory(hProcess, addrs, &renderObjBuffer, sizeof(renderObjBuffer), &bytesRead)
+        && bytesRead == sizeof(renderObjBuffer)) {
+        return true;
+    }
+    return false;
+
 }

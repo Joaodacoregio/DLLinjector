@@ -25,6 +25,12 @@
     <Filter Include="Source Files\reader">
       <UniqueIdentifier>{672412e9-b8e7-4868-b01a-6cacddbff09c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\stages">
+      <UniqueIdentifier>{b0248292-3afd-4fff-877b-0406aa6f85ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\stages">
+      <UniqueIdentifier>{d09b826d-a2b6-4b5f-83ca-b37a92cb2dff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +54,15 @@
     <ClCompile Include="playerReader.cpp">
       <Filter>Source Files\reader</Filter>
     </ClCompile>
+    <ClCompile Include="stageRadar.cpp">
+      <Filter>Source Files\stages</Filter>
+    </ClCompile>
+    <ClCompile Include="dropReader.cpp">
+      <Filter>Source Files\reader</Filter>
+    </ClCompile>
+    <ClCompile Include="obstacleReader.cpp">
+      <Filter>Source Files\reader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="objectRenderReader.h">
@@ -67,6 +82,15 @@
     </ClInclude>
     <ClInclude Include="playerReader.h">
       <Filter>Header Files\reader</Filter>
+    </ClInclude>
+    <ClInclude Include="dropReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="obstacleReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stageRadar.h">
+      <Filter>Header Files\stages</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

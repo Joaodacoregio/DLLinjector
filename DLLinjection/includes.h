@@ -1,6 +1,8 @@
 #ifndef INCLUDES_H
 #define INCLUDES_H
 
+#define DEFAULT_MIN_DISTANCE 9999999999.0f //Big distance
+
 #include <windows.h>
 #include <iostream>
 #include <iomanip>

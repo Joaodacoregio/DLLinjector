@@ -132,21 +132,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dropReader.cpp" />
     <ClCompile Include="entityReader.cpp" />
     <ClCompile Include="mainGUI.cpp" />
     <ClCompile Include="mainGUI.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="objectRenderReader.cpp" />
+    <ClCompile Include="obstacleReader.cpp" />
     <ClCompile Include="playerReader.cpp" />
+    <ClCompile Include="stageRadar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dropReader.h" />
     <ClInclude Include="entityReader.h" />
     <ClInclude Include="includes.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="objectRenderReader.h" />
+    <ClInclude Include="obstacleReader.h" />
     <ClInclude Include="playerReader.h" />
     <ClInclude Include="renderObjects.h" />
+    <ClInclude Include="stageRadar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

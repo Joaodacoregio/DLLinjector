@@ -4,7 +4,7 @@
  
  
 #include "includes.h"
-#include "objectRenderReader.h"
+#include "objectRenderReader.h" //Isso esta errado.
  
 
 class ObjectRenderReader;
@@ -18,7 +18,7 @@ public:
 		this->ptrReaderObjectRender = ptrReaderObjectRender;
 	}
 
-	std::wstring getEntityName(const Entity& entityBuffer);
+ 
 	bool EntityNav(uintptr_t entityAddr);
 	bool EspecieNav(uintptr_t especieAddr);
 	void collectEntities(uintptr_t nextEntityAddr);
@@ -28,6 +28,14 @@ public:
 	void validEntitiesAddr(StageRange range);
 	void validEntities(StageRange range);
 	Entity readEntityAddr(uintptr_t entityAddr);
+	std::wstring getEntityName(const Entity& entityBuffer);
+	Entity getNearestEntity(Player player);
+	uintptr_t getNearestEntityAddrs(Player player);
+	uintptr_t getEntityAddrsUsingName(const std::wstring& name);
+	std::wstring getCurrentSkill(const Entity& entityBuffer);
+	uintptr_t realNearestEntity(uintptr_t nearestEntityAddr, StageRange range, Player player);
+	std::set<std::wstring> getEntityData();
+	void addNpcName(const std::wstring& npcName) { npcNames.push_back(npcName); }
 
 	//Getters and setters for private members (no copy)
 	void setNpcNames(std::vector<std::wstring> npcNames) { this->npcNames = npcNames; }

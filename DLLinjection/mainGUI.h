@@ -13,16 +13,18 @@ class MyFrame : public wxFrame
 public:
     MyFrame();
     ~MyFrame() {StopBot();}
+    static void writeTerminal(std::wstring textx);
 
 private:
     void OnStartBot(wxCommandEvent& event);
     void OnSelectStage(wxCommandEvent& event);
     void StopBot();
+  
 
     wxTextCtrl* terminal;           // Terminal (wxTextCtrl)
     std::atomic<bool> isRunning;   // Flag para controlar o loop da thread
     std::thread botThread;         // Thread do bot
-
+    static MyFrame* instance;      // Instância da classe
 };
 
 enum
